@@ -402,9 +402,12 @@ if st.session_state.get('generation_done', False):
         )
         
         if result_path and os.path.exists(result_path):
+             st.markdown("### 📸 최종 완성된 썸네일")
+             st.markdown("👇 아래 이미지를 **[마우스 우클릭] -> [이미지 복사]** 하신 후 네이버 블로그에 바로 붙여넣기(Ctrl+V) 하셔도 됩니다!")
+             st.image(output_path, use_column_width=True)
              with open(output_path, "rb") as file:
                  st.download_button(
-                     label="📥 최종 썸네일 고화질 저장",
+                     label="📥 썸네일 파일로 다운로드 (원본 화질)",
                      data=file,
                      file_name="thumbnail.png",
                      mime="image/png",
@@ -422,7 +425,7 @@ if st.session_state.get('generation_done', False):
     # 따라서 안내 문구 박스로 대체하여 직접 다운로드한 이미지를 첨부하도록 유도.
     img_html = ""
     if os.path.exists(output_path):
-        img_html = f'<div style="text-align: center; margin-bottom: 30px; padding: 40px; background-color: #f8f9fa; border: 2px dashed #cecece; border-radius: 8px; color: #888;"><b>📷 이곳에 다운로드 버튼으로 저장한 썸네일 이미지를 직접 첨부해 주세요.</b><br><span style="font-size: 13px;">(네이버 블로그는 웹 이미지 직접 복사/붙여넣기 보안 정책상 이미지 파일의 수동 업로드가 필요합니다)</span></div>'
+        img_html = f'<div style="text-align: center; margin-bottom: 30px; padding: 40px; background-color: #f8f9fa; border: 2px dashed #cecece; border-radius: 8px; color: #888;"><b>📷 이곳에 방금 복사한 썸네일 이미지를 붙여넣기(Ctrl+V) 하거나 파일을 첨부해 주세요.</b><br><span style="font-size: 13px;">(네이버 블로그 보안 정책상, 웹사이트 내장 이미지의 한 번에 복사되기를 차단하므로 직접 붙여넣어야 합니다)</span></div>'
     
     html_content = f'<div style="background-color: #FFFFFF; color: #000000; padding: 30px; border-radius: 10px; border: 1px solid #E0E0E0; font-family: \'Malgun Gothic\', \'Apple SD Gothic Neo\', sans-serif; line-height: 1.8; font-size: 16px;">{img_html}{safe_content}</div>'
     
