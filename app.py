@@ -418,13 +418,11 @@ if st.session_state.get('generation_done', False):
     import markdown
     safe_content = markdown.markdown(st.session_state['blog_content'], extensions=['nl2br', 'sane_lists', 'extra'])
     
-    # 썸네일 이미지를 Base64로 인코딩하여 HTML에 포함
+    # 네이버 블로그 스마트에디터는 Base64 인코딩 이미지를 보안상 차단하여 복사/붙여넣기를 허용하지 않음.
+    # 따라서 안내 문구 박스로 대체하여 직접 다운로드한 이미지를 첨부하도록 유도.
     img_html = ""
     if os.path.exists(output_path):
-        with open(output_path, "rb") as img_file:
-            b64_string = base64.b64encode(img_file.read()).decode("utf-8")
-            # 네이버 블로그 가로폭 최적화 (보통 800~900px 내외)
-            img_html = f'<div style="text-align: center; margin-bottom: 30px;"><img src="data:image/png;base64,{b64_string}" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" alt="썸네일 이미지"></div>'
+        img_html = f'<div style="text-align: center; margin-bottom: 30px; padding: 40px; background-color: #f8f9fa; border: 2px dashed #cecece; border-radius: 8px; color: #888;"><b>📷 이곳에 다운로드 버튼으로 저장한 썸네일 이미지를 직접 첨부해 주세요.</b><br><span style="font-size: 13px;">(네이버 블로그는 웹 이미지 직접 복사/붙여넣기 보안 정책상 이미지 파일의 수동 업로드가 필요합니다)</span></div>'
     
     html_content = f'<div style="background-color: #FFFFFF; color: #000000; padding: 30px; border-radius: 10px; border: 1px solid #E0E0E0; font-family: \'Malgun Gothic\', \'Apple SD Gothic Neo\', sans-serif; line-height: 1.8; font-size: 16px;">{img_html}{safe_content}</div>'
     
