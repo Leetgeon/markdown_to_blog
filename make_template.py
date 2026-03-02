@@ -31,8 +31,9 @@ def create_base_template(output_path):
     draw.ellipse([(105, btn_y-btn_radius), (105+btn_radius*2, btn_y+btn_radius)], fill=(39, 201, 63))
 
     # 5. Naver Blog 로고 & 텍스트 (간략화 표현)
-    # 폰트 로드 시도 (없으면 기본)
-    font_path = "C:/Windows/Fonts/malgun.ttf"
+    # 폰트 로드 시도 (프로젝트 내장 폰트 사용)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    font_path = os.path.join(base_dir, "fonts", "NanumGothic.ttf")
     try:
         font_logo = ImageFont.truetype(font_path, 20)
         font_url = ImageFont.truetype(font_path, 20)

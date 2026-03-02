@@ -362,7 +362,9 @@ if st.session_state.get('generation_done', False):
             ]
         }
         from PIL import Image
-        bg_image = Image.open(template_path)
+        # st_canvas가 Streamlit Cloud 환경에서 원본(1000x1000)을 전송할 때 백지화되는 WebSocket 데이터 한계 버그 방지
+        # 캔버스 크기에 딱 맞춰 resize 하여 가벼운 상태로 넘겨줌
+        bg_image = Image.open(template_path).resize((canvas_size, canvas_size))
 
         # Drawable Canvas 렌더링 (드래그, 리사이징 가능)
         canvas_result = st_canvas(
