@@ -206,21 +206,21 @@ if st.session_state.get('generation_done', False):
             'keyword': 30,
             'hashtag': 35
         }
+    # 배포(Linux) 환경에서도 안전하게 렌더링되도록 프로젝트 내장 폰트 사용
+    import os
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    default_font = os.path.join(base_dir, "fonts", "NanumGothic.ttf")
+    
     if 'font_files' not in st.session_state:
         st.session_state['font_files'] = {
-            'title': "C:/Windows/Fonts/malgun.ttf",
-            'subtitle': "C:/Windows/Fonts/malgun.ttf",
-            'keyword': "C:/Windows/Fonts/malgun.ttf",
-            'hashtag': "C:/Windows/Fonts/malgun.ttf"
+            'title': default_font,
+            'subtitle': default_font,
+            'keyword': default_font,
+            'hashtag': default_font
         }
     
-    # 윈도우 기본 폰트 목록 예시
     font_options = {
-        "맑은 고딕 (Malgun Gothic)": "C:/Windows/Fonts/malgun.ttf",
-        "맑은 고딕 굵게 (Malgun Gothic Bold)": "C:/Windows/Fonts/malgunbd.ttf",
-        "바탕 (Batang)": "C:/Windows/Fonts/batang.ttc",
-        "돋움 (Dotum)": "C:/Windows/Fonts/gulim.ttc",
-        "궁서 (Gungsuh)": "C:/Windows/Fonts/gungsuh.ttc",
+        "나눔고딕 (Nanum Gothic)": default_font
     }
     
     with col_edit:
@@ -230,7 +230,7 @@ if st.session_state.get('generation_done', False):
             new_title = st.text_area("텍스트 (\\n 입력시 줄바꿈)", value=st.session_state['thumb_title'], height=60, key='txt_title')
             col1, col2 = st.columns(2)
             with col1:
-                f_title = st.selectbox("주제목 글꼴", list(font_options.keys()), index=1)
+                f_title = st.selectbox("주제목 글꼴", list(font_options.keys()), index=0)
                 st.session_state['font_files']['title'] = font_options[f_title]
             with col2:
                 st.session_state['font_sizes']['title'] = st.number_input("크기", value=st.session_state['font_sizes']['title'], step=2, key='sz_title')
@@ -387,11 +387,10 @@ if st.session_state.get('generation_done', False):
                 elif obj.get("id") == "hashtag_text": st.session_state['coords']['hashtag'] = (new_x, new_y)
 
         # 백엔드에 고해상도 최종 이미지 렌더링 저장
-        windows_font = "C:/Windows/Fonts/malgun.ttf"
         result_path = sys.modules['thumbnail_maker'].create_thumbnail(
              template_path=template_path,
              output_path=output_path,
-             font_path=windows_font, # 여기서 누락되었던 파라미터 추가
+             font_path=default_font, # 누락 파라미터 방지용 기본값
              title=new_title,
              subtitle=new_subtitle,
              keyword=new_keyword,
