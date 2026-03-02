@@ -415,8 +415,8 @@ if st.session_state.get('generation_done', False):
     st.markdown("---")
     st.header("📝 완성된 블로그 포스트 (네이버 블로그 복사 최적화)")
     
-    # 네이버 블로그 복사용 최적화 렌더링 (흰색 배경, 검정 글씨 강제, 썸네일 포함)
-    safe_content = st.session_state['blog_content'].replace('\n', '<br>')
+    import markdown
+    safe_content = markdown.markdown(st.session_state['blog_content'], extensions=['nl2br', 'sane_lists', 'extra'])
     
     # 썸네일 이미지를 Base64로 인코딩하여 HTML에 포함
     img_html = ""
